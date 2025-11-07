@@ -2,13 +2,15 @@ name: Build Debian Package
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "test" ]
 
 jobs:
   deb-build:
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     container:
-      image: ghcr.io/vanilla-os/pico:main
+      image: ghcr.io/vanilla-arm/pico:dev
       volumes:
         - /proc:/proc
         - /:/run/host
@@ -42,7 +44,6 @@ jobs:
 
     - uses: softprops/action-gh-release@v1
       with:
-        token: "${{ secrets.GITHUB_TOKEN }}"
         tag_name: "continuous"
         prerelease: true
         name: "Continuous Build"
